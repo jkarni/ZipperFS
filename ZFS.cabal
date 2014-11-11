@@ -16,7 +16,7 @@ description:         A implementation of a zipper filesystem using delimited con
                      mutate any global state - and the type system sees to it.
 
 data-files:          zfs.pdf, README
-Cabal-Version:       >= 1.2
+Cabal-Version:       >= 1.8
 Tested-With:         GHC==6.8.2
 build-type:          Simple
 
@@ -28,3 +28,8 @@ Library
 
         ghc-options:         -Wall
         ghc-prof-options:    -prof -auto-all
+
+Executable ZipperFS
+        main-is:             Main.hs
+        build-depends:       base, ZFS
+        hs-source-dirs:      .

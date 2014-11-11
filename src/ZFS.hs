@@ -1,4 +1,7 @@
-{-# OPTIONS -fglasgow-exts #-}
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE KindSignatures #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 {-
 Zipper-based File/Operating system
@@ -17,16 +20,16 @@ module ZFS where
 
 import ZipperM
 
-import Control.Exception (bracket)
+import Control.Exception (try, bracket)
 import Control.Monad.Trans (liftIO, MonadIO())
-import Data.List as List
-import Data.Map  as Map
+import qualified Data.List as List
+import qualified Data.Map  as Map
 import Foreign                          -- needed for select hacks:
 import Foreign.C                        -- Unix select is not available in
 import Foreign.Ptr                      -- GHC
 import Network.Socket
 import System.IO
-import System.IO.Error as IO
+import qualified System.IO.Error as IO
 import System.Posix (closeFd)
 import System.Posix.Types(Fd(..))
 
@@ -88,8 +91,6 @@ data World r = World { mountedFS :: Term
                      , jobQueue  :: [JobQueueT r]
                      , osPrompt  :: Prompt r (OSReq r IO)
                      }
-
-main = main' fs1
 
 main' :: Term -> IO a
 main' fs = bracket (serverSocket newClientPort) sClose $
@@ -168,9 +169,9 @@ osloop world =
       syslog ["reading from",show s]
       syslog ["osloop: queue size: ", show $ length $ jobQueue world]
       dat <- liftIO $ (
-             do r <-  IO.try (recv s (1024 * 8))
+             do r <- try (recv s (1024 * 8))
                 case r of
-                       Left err  -> if isEOFError err then return ""
+                       Left err  -> if IO.isEOFError err then return ""
                                     else ioError err
                        Right msg -> return msg)
       k (return dat) >>= interpret'req world ctx
@@ -367,13 +368,20 @@ cmd'help :: forall t
                                         (Monad m, Monad m1) =>
                                         FSZipper r m -> t -> t1 -> t2 -> m1 (FSCmdResp r1 m2)
 cmd'help z _ _ _ = return $ FSCS $ "Commands: " ++
-                     (concat $ intersperse ", " $ List.map fst cmds)
+                     (concat $ List.intersperse ", " $ List.map fst cmds)
   where
-  cmds = fsCommands
+
+   cmds :: [(String, FSZipper r2 m
+                    -> Prompt r2 (OSReq r2 m)
+                    -> String
+                    -> String
+                    -> String
+                    -> CCT r2 m (OSReq r2 m))]
+   cmds = fsCommands
   -- The following statement does nothing at run-time. It is here
   -- just to tell the typechecker that the monad `m' in fsCommands and
   -- that in 'z' are the same
-  _ = snd (head cmds) z
+  {-_ = _ `asTypeOf` snd (head cmds) z-}
 
 cmd'ls :: forall t
                                              r
