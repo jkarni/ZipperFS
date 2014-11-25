@@ -3,6 +3,9 @@ version:             0.0.1
 
 license:             PublicDomain
 author:              Amr Sabry, R. Kent Dybvig, Simon L. Peyton Jones, Oleg Kiselyov
+maintainer:          Julian K. Arni <jkarni@gmail.com>
+homepage:            https://github.com/jkarni/ZipperFS
+bug-reports:         https://github.com/jkarni/ZipperFS/issues
 
 stability:           Experimental
 category:            Monads
@@ -14,22 +17,28 @@ description:         A implementation of a zipper filesystem using delimited con
                      There are no unsafe operations, no GHC (let alone) Unix threads,
                      no concurrency problems. Our threads can't even do IO and can't
                      mutate any global state - and the type system sees to it.
+                     .
+                     To run, type @main' fs1@ on ghci after loading ZFS.hs.
+                     Then from some other terminal, type 'telnet localhost 1503'.
 
 data-files:          zfs.pdf, README
 Cabal-Version:       >= 1.8
 Tested-With:         GHC==6.8.2
 build-type:          Simple
 
-Library
-        build-depends:       base>3, mtl, unix, network, containers, CC-delcont <= 0.2
+source-repository head
+    type: git
+    location: git://github.com/jkarni/ZipperFS.git
 
+Library
+        build-depends:       base > 3 && < 5
+                           , mtl
+                           , unix
+                           , network
+                           , containers
+                           , CC-delcont <= 0.2
         hs-source-dirs:      src
         exposed-modules:     ZFS, ZipperM
 
-        ghc-options:         -Wall
+        ghc-options:         -Wall -threaded
         ghc-prof-options:    -prof -auto-all
-
-Executable ZipperFS
-        main-is:             Main.hs
-        build-depends:       base, ZFS
-        hs-source-dirs:      .

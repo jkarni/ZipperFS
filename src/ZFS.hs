@@ -378,10 +378,6 @@ cmd'help z _ _ _ = return $ FSCS $ "Commands: " ++
                     -> String
                     -> CCT r2 m (OSReq r2 m))]
    cmds = fsCommands
-  -- The following statement does nothing at run-time. It is here
-  -- just to tell the typechecker that the monad `m' in fsCommands and
-  -- that in 'z' are the same
-  {-_ = _ `asTypeOf` snd (head cmds) z-}
 
 cmd'ls :: forall t
                                              r
