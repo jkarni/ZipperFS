@@ -1,5 +1,5 @@
 name:                ZFS
-version:             0.0.1
+version:             0.0.2
 
 license:             PublicDomain
 author:              Amr Sabry, R. Kent Dybvig, Simon L. Peyton Jones, Oleg Kiselyov
