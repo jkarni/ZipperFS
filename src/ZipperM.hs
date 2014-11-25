@@ -1,8 +1,4 @@
-{-# OPTIONS -fglasgow-exts #-}
-
--- Zipper over the Map with path accumulation
--- $Id: ZipperM.hs,v 1.4 2005/09/22 03:06:38 oleg Exp $
-
+{-# LANGUAGE ScopedTypeVariables #-}
 module ZipperM (Term(..)
                , FileName
                , FileCont
