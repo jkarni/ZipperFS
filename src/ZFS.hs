@@ -14,7 +14,12 @@ Please see http://pobox.com/~oleg/ftp/papers/zfs-talk.pdf
 for the demo and explanations.
 
 -- $Id: ZFS.hs,v 1.8 2005/10/14 23:00:41 oleg Exp $
+
+NOTE: the above demo and explanation can be viewed at the following url:
+  - https://web.archive.org/web/20190809002903/http://okmij.org/ftp/continuations/ZFS/zfs-talk.pdf
 -}
+
+
 
 module ZFS where
 

@@ -23,7 +23,7 @@ description:         A implementation of a zipper filesystem using delimited con
 
 data-files:          zfs.pdf, README
 Cabal-Version:       >= 1.8
-Tested-With:         GHC==6.8.2
+Tested-With:         GHC==8.0.2
 build-type:          Simple
 
 source-repository head
@@ -36,7 +36,7 @@ Library
                            , unix
                            , network
                            , containers
-                           , CC-delcont <= 0.2
+                           , CC-delcont
         hs-source-dirs:      src
         exposed-modules:     ZFS, ZipperM
 
