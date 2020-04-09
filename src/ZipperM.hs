@@ -9,6 +9,7 @@ module ZipperM (Term(..)
                , promptP
               ) where
 
+import Prelude hiding (traverse)
 import Control.Monad.CC
 import Control.Monad.Identity
 import Control.Monad.Trans
